@@ -1,2 +1,0 @@
-# GaduHoken
-Meu WebCurriculo
