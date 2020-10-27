@@ -1,0 +1,34 @@
+variables:
+- name: buildConfiguration
+  value: Release
+stages:
+- stage: __default
+  jobs:
+  - job: Job
+    pool:
+      vmImage: Ubuntu 16.04
+    steps:
+    - task: CmdLine@2
+      displayName: dotnet restore
+      inputs:
+        script: dotnet restore
+    - task: CmdLine@2
+      displayName: dotnet build $(buildConfiguration)
+      inputs:
+        script: dotnet build --configuration $(buildConfiguration)
+    - task: DotNetCoreCLI@2
+      displayName: dotnet test $(buildConfiguration)
+      inputs:
+        command: test
+        projects: '**/*Tests/*.csproj'
+        arguments: --configuration $(buildConfiguration) --collect "Code coverage"
+    - task: DotNetCoreCLI@2
+      displayName: dotnet publish $(buildConfiguration)
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
+        zipAfterPublish: false
+    - task: PublishBuildArtifacts@1
+      displayName: publish artifacts
+
