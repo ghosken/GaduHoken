@@ -13,3 +13,7 @@ function abrirTwitter() {
 function abrirGithub() {
     window.open("https://github.com/ghosken");
 }
+
+function gerarPDF() {
+    window.print();
+}
